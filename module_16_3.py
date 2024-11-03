@@ -14,7 +14,7 @@ async def get_users() -> dict:
 
 @app.post("/user/{username}/{age}")
 async def post_user(
-        username: Annotated[str, Path(min_length=5, max_length=20, description='Enter username', example="Alex")],
+        username: Annotated[str, Path(min_length=4, max_length=20, description='Enter username', example="Alex")],
         age: Annotated[int, Path(ge=18, le=120, description="Enter age", example="40")]
 ) -> str:
     user_id = str(int(max(users, key=int)) + 1)
@@ -24,7 +24,7 @@ async def post_user(
 
 @app.put("/user/{user_id}/{username}/{age}")
 async def update_user(
-        user_id: Annotated[str, Path(ge=1, le=100, description='Enter User ID', example="15")],
+        user_id: Annotated[str, Path(min_length=1, max_length=100, description='Enter User ID', example="15")],
         username: Annotated[str, Path(min_length=4, max_length=20, description='Enter username', example="Alex")],
         age: Annotated[int, Path(ge=18, le=120, description="Enter age", example="40")]
 ) -> str:
@@ -33,6 +33,6 @@ async def update_user(
 
 
 @app.delete("/user/{user_id}")
-async def delete_user(user_id: str = Path(ge=1, le=100, description='Enter User ID', example="15")) -> str:
+async def delete_user(user_id: str = Path(min_length=1, max_length=100, description='Enter User ID', example="15")) -> str:
     users.pop(user_id)
     return f"User {user_id} has been deleted"
